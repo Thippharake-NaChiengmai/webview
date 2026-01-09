@@ -15,6 +15,9 @@ class MyApp extends StatelessWidget {
       title: 'Webview Thippharake',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent),
+        appBarTheme: const AppBarTheme(
+        foregroundColor: Colors.white
+        ),
       ),
       home: const MyHomePage(title: 'Webview Thippharake'),
       debugShowCheckedModeBanner: false,
