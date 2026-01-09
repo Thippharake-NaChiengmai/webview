@@ -42,10 +42,27 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      // Load from URL <eg>
-      // .. loadRequest(Uri.parse("https://flutter.dev/"));
+    // Load from URL <eg> **update for state event**
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (url) {
+            print("Page started loading: $url");
+          },
+          onPageFinished: (url) {
+            print("Page finished loading: $url");
+          },
+          onNavigationRequest: (request) {
+            if (request.url.startsWith("https://flutter.dev/")) {
+              return NavigationDecision.navigate;
+            }
+            print("Blocked navigation to: ${request.url}");
+            return NavigationDecision.prevent;
+          },
+        ),
+      )
+      .. loadRequest(Uri.parse("https://flutter.dev/"));
       // Load from assets files <Point1>
-      ..loadFlutterAsset('assets/index.html');
+      // ..loadFlutterAsset('assets/index.html');
       // Load from HTML string <Point2>
 //       ..loadHtmlString('''
 // <!DOCTYPE html>
