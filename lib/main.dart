@@ -233,6 +233,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
+      //Stack is overlay with others widget
       body: Stack(
         children: [
           WebViewWidget(controller: _controller),
