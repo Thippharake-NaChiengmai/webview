@@ -36,6 +36,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late WebViewController _controller;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -46,13 +47,20 @@ class _MyHomePageState extends State<MyHomePage> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (url) {
+            setState(() {
+              _isLoading = true;
+            });
             print("Page started loading: $url");
           },
           onPageFinished: (url) {
+            setState(() {
+              _isLoading = false;
+            });
             print("Page finished loading: $url");
           },
           onNavigationRequest: (request) {
-            if (request.url.startsWith("https://flutter.dev/")) {
+            if (request.url.startsWith("https://flutter.dev/") ||
+                request.url.startsWith("https://docs.flutter.dev")) {
               return NavigationDecision.navigate;
             }
             print("Blocked navigation to: ${request.url}");
@@ -225,7 +233,15 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: WebViewWidget(controller: _controller),
+      body: Stack(
+        children: [
+          WebViewWidget(controller: _controller),
+          if (_isLoading)
+            const Center(
+              child: CircularProgressIndicator(),
+            ),
+        ],
+      ),
     );
   }
 }
